@@ -1,0 +1,901 @@
+@extends('layouts.auth')
+
+@section('htmlheader_title')
+Register
+@endsection
+<head>
+    <meta property="og:image" content="https://ev.guoffice.com/img/facebook-og-gubits.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628"> 
+    <meta property="og:description" content="Clique aqui para realizar o seu cadastro e ser um pioneiro Gubits International no Brasil.">
+    <meta property="og:title" content="Você está em busca de uma oportunidade?">
+    <meta property="og:site_name" content="Gubits International">
+    <meta property="og:url" content="https://ev.guoffice.com/cadastro/{{$indicador->username}}">
+</head>
+<center>Available Languages <div id="google_translate_element"><div class="skiptranslate goog-te-gadget" dir="ltr" style=""><div id=":0.targetLanguage" class="goog-te-gadget-simple" style="white-space: nowrap;"><div class="skiptranslate goog-te-gadget" dir="ltr" style=""><div id=":0.targetLanguage"></div></div><div class="skiptranslate goog-te-gadget" dir="ltr" style=""><div id=":0.targetLanguage"></div></div></div><script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, multilanguagePage: true}, 'google_translate_element');
+        }
+        </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></center>
+<style>
+    @media (min-width:320px) { 
+
+    }
+    @media (min-width:480px) {
+
+    }
+    @media (min-width:600px) { 
+
+
+    }
+    @media (min-width:801px) { 
+        .register-box{ width: 650px !important;}
+
+    }
+    @media (min-width:1200px) { 
+        .register-box{ width: 650px !important;}
+    }
+</style>
+@section('content')
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"/>
+
+<body class="hold-transition register-page">
+    <!--style="background: url('https://wallpapercave.com/wp/v4GZ4A0.jpg');
+    -->
+    <div class="register-box" >
+
+        @if (isset($errors) && count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        
+
+            <div align="center" style="margin-top:-50px;">
+                <img src="{{url('/img/logo-login.png')}}" style="max-width:100%">
+            </div>
+            <?php if (isset($indicador->id)) { ?>
+                <p class="login-box-msg" style="margin-top: 20px; margin-bottom: 30px; color: #373737;">You have been nominated for:<br><b>{{$indicador->name. ' - '. $indicador->email}}</b></p>
+            <?php } ?>
+            <form action="{{ url('/cadastro/') }}" method="post" id="formcadastro">
+                {{ csrf_field() }}
+                {{ method_field('POST') }}
+                <input type="hidden" class="form-control" id='cadastro_exterior' name="cadastro_exterior" value="0"/>
+
+                <div class="col-sm-6">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" required placeholder="ID do patrocinador" readonly  value="<?= @$indicador->username ?>" maxlength="20" name="indicador" pattern="[a-zA-Z0-9]+" value="{{old('indicador')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); " />
+                    </div> 
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" required placeholder="Login" maxlength="20" name="username" pattern="[a-zA-Z0-9]+" value="{{old('username')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "/>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" required placeholder="Full Name" name="name" value="{{old('name')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "/>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <select name="juridica_fisica" id="juridica_fisica" class="form-control" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                            <option value="" selected="selected">Type of Registration</option>
+                            <option value="0">Physical person</option>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input name="cpf" type="text" required placeholder="CPF(Valid only for Brazil)" class="form-control cpf" id="cpf" size="14" maxlength="14" value="{{old('cpf')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+<div class="form-group has-feedback">optional*
+                        <input type="text" class="form-control" required placeholder="nº government identification " name="idg" value="{{old('idg')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "/> </div>
+                    <div class="form-group has-feedback">
+                        <div class="form-group">
+                            <select  data-required="true" class="form-control m-t" name="pais" id="pais_fm" required style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                                <option value="" selected="selected">Selecione o seu país</option>
+                                <option value="África do Sul">África do Sul</option>
+<option value="Albânia">Albânia</option>
+<option value="Alemanha">Alemanha</option>
+<option value="Andorra">Andorra</option>
+<option value="Angola">Angola</option>
+<option value="Anguilla">Anguilla</option>
+<option value="Antigua">Antigua</option>
+<option value="Arábia Saudita">Arábia Saudita</option>
+<option value="Argentina">Argentina</option>
+<option value="Armênia">Armênia</option>
+<option value="Aruba">Aruba</option>
+<option value="Austrália">Austrália</option>
+<option value="Áustria">Áustria</option>
+<option value="Azerbaijão">Azerbaijão</option>
+<option value="Bahamas">Bahamas</option>
+<option value="Bahrein">Bahrein</option>
+<option value="Bangladesh">Bangladesh</option>
+<option value="Barbados">Barbados</option>
+<option value="Bélgica">Bélgica</option>
+<option value="Benin">Benin</option>
+<option value="Bermudas">Bermudas</option>
+<option value="Botsuana">Botsuana</option>
+<option value="Brasil" selected>Brasil</option>
+<option value="Brunei">Brunei</option>
+<option value="Bulgária">Bulgária</option>
+<option value="Burkina Fasso">Burkina Fasso</option>
+<option value="botão">botão</option>
+<option value="Cabo Verde">Cabo Verde</option>
+<option value="Camarões">Camarões</option>
+<option value="Camboja">Camboja</option>
+<option value="Canadá">Canadá</option>
+<option value="Cazaquistão">Cazaquistão</option>
+<option value="Chade">Chade</option>
+<option value="Chile">Chile</option>
+<option value="China">China</option>
+<option value="Cidade do Vaticano">Cidade do Vaticano</option>
+<option value="Colômbia">Colômbia</option>
+<option value="Congo">Congo</option>
+<option value="Coréia do Sul">Coréia do Sul</option>
+<option value="Costa do Marfim">Costa do Marfim</option>
+<option value="Costa Rica">Costa Rica</option>
+<option value="Croácia">Croácia</option>
+<option value="Dinamarca">Dinamarca</option>
+<option value="Djibuti">Djibuti</option>
+<option value="Dominica">Dominica</option>
+<option value="EUA">EUA</option>
+<option value="Egito">Egito</option>
+<option value="El Salvador">El Salvador</option>
+<option value="Emirados Árabes">Emirados Árabes</option>
+<option value="Equador">Equador</option>
+<option value="Eritréia">Eritréia</option>
+<option value="Escócia">Escócia</option>
+<option value="Eslováquia">Eslováquia</option>
+<option value="Eslovênia">Eslovênia</option>
+<option value="Espanha">Espanha</option>
+<option value="Estônia">Estônia</option>
+<option value="Etiópia">Etiópia</option>
+<option value="Fiji">Fiji</option>
+<option value="Filipinas">Filipinas</option>
+<option value="Finlândia">Finlândia</option>
+<option value="França">França</option>
+<option value="Gabão">Gabão</option>
+<option value="Gâmbia">Gâmbia</option>
+<option value="Gana">Gana</option>
+<option value="Geórgia">Geórgia</option>
+<option value="Gibraltar">Gibraltar</option>
+<option value="Granada">Granada</option>
+<option value="Grécia">Grécia</option>
+<option value="Guadalupe">Guadalupe</option>
+<option value="Guam">Guam</option>
+<option value="Guatemala">Guatemala</option>
+<option value="Guiana">Guiana</option>
+<option value="Guiana Francesa">Guiana Francesa</option>
+<option value="Guiné-bissau">Guiné-bissau</option>
+<option value="Haiti">Haiti</option>
+<option value="Holanda">Holanda</option>
+<option value="Honduras">Honduras</option>
+<option value="Hong Kong">Hong Kong</option>
+<option value="Hungria">Hungria</option>
+<option value="Iêmen">Iêmen</option>
+<option value="Ilhas Cayman">Ilhas Cayman</option>
+<option value="Ilhas Cook">Ilhas Cook</option>
+<option value="Ilhas Curaçao">Ilhas Curaçao</option>
+<option value="Ilhas Marshall">Ilhas Marshall</option>
+<option value="Ilhas Turks & Caicos">Ilhas Turks & Caicos</option>
+<option value="Ilhas Virgens (brit.)">Ilhas Virgens (brit.)</option>
+<option value="Ilhas Virgens(amer.)">Ilhas Virgens(amer.)</option>
+<option value="Ilhas Wallis e Futuna">Ilhas Wallis e Futuna</option>
+<option value="Índia">Índia</option>
+<option value="Indonésia">Indonésia</option>
+<option value="Inglaterra">Inglaterra</option>
+<option value="Irlanda">Irlanda</option>
+<option value="Islândia">Islândia</option>
+<option value="Israel">Israel</option>
+<option value="Itália">Itália</option>
+<option value="Jamaica">Jamaica</option>
+<option value="Japão">Japão</option>
+<option value="Jordânia">Jordânia</option>
+<option value="Kuwait">Kuwait</option>
+<option value="Latvia">Latvia</option>
+<option value="Líbano">Líbano</option>
+<option value="Liechtenstein">Liechtenstein</option>
+<option value="Lituânia">Lituânia</option>
+<option value="Luxemburgo">Luxemburgo</option>
+<option value="Macau">Macau</option>
+<option value="Macedônia">Macedônia</option>
+<option value="Madagascar">Madagascar</option>
+<option value="Malásia">Malásia</option>
+<option value="Malaui">Malaui</option>
+<option value="Mali">Mali</option>
+<option value="Malta">Malta</option>
+<option value="Marrocos">Marrocos</option>
+<option value="Martinica">Martinica</option>
+<option value="Mauritânia">Mauritânia</option>
+<option value="Mauritius">Mauritius</option>
+<option value="México">México</option>
+<option value="Moldova">Moldova</option>
+<option value="Mônaco">Mônaco</option>
+<option value="Montserrat">Montserrat</option>
+<option value="Nepal">Nepal</option>
+<option value="Nicarágua">Nicarágua</option>
+<option value="Niger">Niger</option>
+<option value="Nigéria">Nigéria</option>
+<option value="Noruega">Noruega</option>
+<option value="Nova Caledônia">Nova Caledônia</option>
+<option value="Nova Zelândia">Nova Zelândia</option>
+<option value="Omã">Omã</option>
+<option value="Palau">Palau</option>
+<option value="Panamá">Panamá</option>
+<option value="Papua-nova Guiné">Papua-nova Guiné</option>
+<option value="Paquistão">Paquistão</option>
+<option value="Peru">Peru</option>
+<option value="Polinésia Francesa">Polinésia Francesa</option>
+<option value="Polônia">Polônia</option>
+<option value="Porto Rico">Porto Rico</option>
+<option value="Portugal">Portugal</option>
+<option value="Qatar">Qatar</option>
+<option value="Quênia">Quênia</option>
+<option value="Rep. Dominicana">Rep. Dominicana</option>
+<option value="Rep. Tcheca">Rep. Tcheca</option>
+<option value="Reunion">Reunion</option>
+<option value="Romênia">Romênia</option>
+<option value="Ruanda">Ruanda</option>
+<option value="Rússia">Rússia</option>
+<option value="Saipan">Saipan</option>
+<option value="Samoa Americana">Samoa Americana</option>
+<option value="Senegal">Senegal</option>
+<option value="Serra Leone">Serra Leone</option>
+<option value="Seychelles">Seychelles</option>
+<option value="Singapura">Singapura</option>
+<option value="Síria">Síria</option>
+<option value="Sri Lanka">Sri Lanka</option>
+<option value="St. Kitts & Nevis">St. Kitts & Nevis</option>
+<option value="St. Lúcia">St. Lúcia</option>
+<option value="St. Vincent">St. Vincent</option>
+<option value="Sudão">Sudão</option>
+<option value="Suécia">Suécia</option>
+<option value="Suiça">Suiça</option>
+<option value="Suriname">Suriname</option>
+<option value="Tailândia">Tailândia</option>
+<option value="Taiwan">Taiwan</option>
+<option value="Tanzânia">Tanzânia</option>
+<option value="Togo">Togo</option>
+<option value="Trinidad & Tobago">Trinidad & Tobago</option>
+<option value="Tunísia">Tunísia</option>
+<option value="Turquia">Turquia</option>
+<option value="Ucrânia">Ucrânia</option>
+<option value="Uganda">Uganda</option>
+<option value="Uruguai">Uruguai</option>
+<option value="Venezuela">Venezuela</option>
+<option value="Vietnã">Vietnã</option>
+<option value="Zaire">Zaire</option>
+<option value="Zâmbia">Zâmbia</option>
+<option value="Zimbábue">Zimbábue</option>
+</select>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback estado_select" >
+                        <?php
+                        $estados = DB::table('estado')->get();
+                        ?>
+                        <select name="estado" class="estados form-control" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                            <?php
+                            $estados_html = '';
+                            $estados_html .= '<select name="estado" onchange="carregar_cidades()" class="estados form-control"  style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "> ';
+                            foreach ($estados as $value) {
+                                echo "<option value='$value->id'> $value->nome</option>";
+                                $estados_html .= '<option value="' . $value->id . '">' . $value->nome . '</option>';
+                            }
+                            $estados_html .= '</select><p id="descCep" data-cep="0"></p>';
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group has-feedback cidade_select" disabled="" title="<?= Lang::trans('site.select-an-option') ?>" >
+                        <select name="cidade"  class="cidades form-control" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                            <?php
+                            foreach (DB::table('cidade')->where('estado', 1)->get() as $value) {
+                                echo "<option value='$value->id'> $value->nome</option>";
+                            }
+                            ?>
+                            <?php
+                            $cidades_html = '';
+                            $cidades_html .= '<select name="cidade" class="cidades form-control"  style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">';
+                            foreach (DB::table('cidade')->where('estado', 1)->get() as $value) {
+                                echo "<option value='$value->id'> $value->nome</option>";
+                                $cidades_html .= '<option value="' . $value->id . '">' . $value->nome . '</option>';
+                            }
+                            $cidades_html .= '</select>';
+                            ?>
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="col-sm-6">
+
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control data" placeholder="Date of birth" name="nascimento" value="{{old('nascimento')}}" required style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "/>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control" required placeholder="Email" name="email" value="{{old('email')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control" required placeholder="
+Repeat your E-mail" name="email_confirmation" id="email_confirmation" value="" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" required placeholder="Password" name="password" value=""/ value="<?= @$indicador->username ?>" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" required placeholder="Repeat your password" name="password_confirmation" value=""/ value="<?= @$indicador->username ?>" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <select name="sexo" class="form-control" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                            <option value="" selected="selected">Select your Gender</option>
+                            <option value="Masculino">
+                                Male
+                            </option>
+                            <option value="Feminino">
+                                Female
+
+                            </option>
+
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control telefone" required placeholder="
+Mobile phone with Extension" name="telefone" value="{{old('telefone')}}"/ style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control endereco" placeholder="Address" name="endereco" value="{{old('endereco')}}" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; padding: 20px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); "/>
+                    </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group has-feedback" >
+                        <select name="pacote" class=" pacote form-control" style="background: rgba(0, 0, 0, 0.08) !important; border-width: 0px; height: 40px; color: rgba(42, 42, 42, 0.91); border-radius:4px; box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.1); ">
+                        @foreach($pacotes as $pacote)
+                            @if ($pacote->status==1 and $pacote->valor>=0 &&  $pacote->id<>10 )
+                            <option value="{{$pacote->id}}" @if($pacote->id ==11) selected @endif>
+                                    {{$pacote->nome}} - US$ {{$pacote->valor}},00
+                        </option>
+                        @endif
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+                <div class="col-xs-12 text-center">
+                    <input type="checkbox" name="terms" required > I have read and agree to the <a href="#" data-toggle="modal" data-target="#contrato-e-termos">Agreement and Terms of Use</a><br><br>
+
+
+                   <!-- MODAL PARA ACEITE DE CONTRATO E TERMOS DE USO -->
+
+                    <div class="modal fade" id="contrato-e-termos" tabindex="-1" role="dialog" aria-labelledby="modal-popout" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="margin-top: 2160px;">
+                                <div class="block block-themed block-transparent mb-0">
+                                    <div class="block-header bg-primary-dark">
+                                        <h3 class="block-title">Contrato e Termos de Uso</h3>
+                                        <div class="block-options">
+                                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                                <i class="si si-close"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="block-content">
+                                        <div class="modal-body">
+                                            <p dir="ltr" style="text-align: center;"><strong><span style="font-size:16px"><span style="color:#000000">TERMOS E CONDI&Ccedil;&Otilde;ES DE USO</span></span></strong></p>
+
+                                            <p dir="ltr" style="text-align: center;">&nbsp;</p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Este documento descreve os termos e condi&ccedil;&otilde;es&nbsp;sobre os quais a plataforma &quot;dxrcointrade.com&quot; oferece acesso ao Site da Internet encontrado em </span><a href="http://www.dxrcointrade.com"><span style="color:#000000">www.dxrcointrade.com</span></a><span style="color:#000000"> para o usu&aacute;rio.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">LEIA A POL&Iacute;TICA DE PRIVACIDADE, E TODOS OS SEGUINTES TERMOS E CONDI&Ccedil;&Otilde;ES, INCLUINDO AS CONDI&Ccedil;&Otilde;ES ESPECIAIS ANTES DE USAR ESTE SITE. AO CONTINUAR A ACESSAR OU A UTILIZAR A PLATAFORMA OU QUALQUER SERVI&Ccedil;O, O USU&Aacute;RIO RECONHECE SUA ACEITA&Ccedil;&Atilde;O DOS TERMOS E CONDI&Ccedil;&Otilde;ES APRESENTADOS. </span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Reservamo-nos o direito de, a qualquer momento, alterar, remover ou adicionar a estes TERMOS E CONDI&Ccedil;&Otilde;ES DE USO. Verifique o t&iacute;tulo &quot;&Uacute;ltima Atualiza&ccedil;&atilde;o&quot; na parte inferior deste documento para ver quando os Termos e Condi&ccedil;&otilde;es foram modificados pela &uacute;ltima vez. Qualquer altera&ccedil;&atilde;o nos Termos e Condi&ccedil;&otilde;es de Uso entrar&aacute; em vigor quando da publica&ccedil;&atilde;o revisada no Site. O uso do Site ou dos Servi&ccedil;os, ou a provis&atilde;o de informa&ccedil;&otilde;es pessoais do usu&aacute;rio ap&oacute;s qualquer altera&ccedil;&atilde;o significar&aacute; que o usu&aacute;rio aceita os Termos e Condi&ccedil;&otilde;es atualizados.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Se, a qualquer momento, o usu&aacute;rio n&atilde;o aceitar os TERMOS E CONDI&Ccedil;&Otilde;ES, ele n&atilde;o deve utilizar o Site. Quaisquer termos e condi&ccedil;&otilde;es propostos pelo usu&aacute;rio que sejam complementares ou que estejam em conflito com estes TERMOS E CONDI&Ccedil;&Otilde;ES e forem expressamente rejeitados pela Empresa, n&atilde;o ter&atilde;o for&ccedil;a ou efeito.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio entende e concorda que a Dxrcointrade pode interromper ou alterar o Site a qualquer momento, sem aviso pr&eacute;vio. &nbsp;O usu&aacute;rio tamb&eacute;m entende e concorda que a Dxrcointrade pode interromper ou restringir o uso deste Site por qualquer motivo, sem aviso pr&eacute;vio.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;">&nbsp;</p>
+
+                                            <p dir="ltr" style="text-align: center;"><strong><span style="font-size:16px"><span style="color:#000000">Conta do Usu&aacute;rio</span></span></strong></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Como parte do processo necess&aacute;rio para configurar uma conta no Site (uma &quot;Conta&quot;) e obter acesso a certas partes dos Servi&ccedil;os, o usu&aacute;rio ser&aacute; obrigado a fornecer seu nome completo, endere&ccedil;o de e-mail, senha e n&uacute;mero de telefone (as &quot;Credenciais de Registro&quot;) ou inscreva-se atrav&eacute;s de uma das Contas de Terceiros (conforme definido abaixo). &nbsp;O usu&aacute;rio deve garantir que suas credenciais de registro sejam precisas, verdadeiras e atualizadas. Reservamo-nos o direito de bloquear a cria&ccedil;&atilde;o da uma Conta com base na nossa incapacidade de confirmar a autenticidade das Credenciais de Registo do usu&aacute;rio.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Como alternativa ao registro diretamente com o Site, fornecendo suas Credenciais de Registro, oferecemos a op&ccedil;&atilde;o de o usu&aacute;rio se registrar e entrar na sua Conta atrav&eacute;s de uma das suas contas em sites de redes sociais como Facebook, Twitter ou Google+ (o &quot;Terceiro&quot; Conta (s) da Parte &quot;). Consulte nossa Pol&iacute;tica de Privacidade para obter mais informa&ccedil;&otilde;es sobre como fazer login em sua conta atrav&eacute;s de uma conta de terceiros.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A menos que o usu&aacute;rio fa&ccedil;a login na sua Conta atrav&eacute;s de uma Conta de Terceiro, observe que o endere&ccedil;o de e-mail e a senha que o usu&aacute;rio fornece como parte das Credenciais de Registro ser&atilde;o usadas para entrar na sua Conta. &nbsp;O usu&aacute;rio ser&aacute; o &uacute;nico respons&aacute;vel por manter a confidencialidade do seu endere&ccedil;o de e-mail e senha e deve notificar imediatamente a Empresa de qualquer uso n&atilde;o autorizado de sua Conta. &nbsp;O usu&aacute;rio &eacute; o &uacute;nico respons&aacute;vel por toda a atividade e uso em sua Conta, incluindo, mas n&atilde;o limitado ao uso da Conta por qualquer terceiro autorizado pelo usu&aacute;rio para usar seu endere&ccedil;o de e-mail e senha.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Permitimos que o usu&aacute;rio mantenha apenas uma Conta para acessar os Servi&ccedil;os, o usu&aacute;rio declara que atualmente n&atilde;o possui outra(s) Conta (s) registrada(s).</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Reservamo-nos o direito de encerrar a sua Conta, a nosso exclusivo crit&eacute;rio, a qualquer momento sem aviso pr&eacute;vio. &nbsp;O usu&aacute;rio pode encerrar sua Conta em qualquer momento, cancelando a inscri&ccedil;&atilde;o da maneira descrita em no Site. Ap&oacute;s a rescis&atilde;o, o usu&aacute;rio receber&aacute; uma confirma&ccedil;&atilde;o autom&aacute;tica via e-mail que o pedido foi recebido e sua Conta ser&aacute; encerrada imediatamente.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;">&nbsp;</p>
+
+                                            <p dir="ltr" style="text-align: center;"><strong><span style="font-size:16px"><span style="color:#000000">Servi&ccedil;os Sem An&uacute;ncios</span></span></strong></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Nossos servi&ccedil;os b&aacute;sicos s&atilde;o gratuitos, mas podemos oferecer atualiza&ccedil;&otilde;es pagas para recursos avan&ccedil;ados, como a vers&atilde;o &quot;livre de an&uacute;ncios&quot; dos Servi&ccedil;os (&quot;Servi&ccedil;os sem an&uacute;ncios&quot;).</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio pode contratar servi&ccedil;os gratuitos para an&uacute;ncios, que incluem a remo&ccedil;&atilde;o de todos os an&uacute;ncios em sua conta em todas as plataformas online relacionadas, incluindo do nosso site e/ou nossos aplicativo, que estar&atilde;o dispon&iacute;veis para uso em v&aacute;rias lojas de aplicativos (por exemplo, Google Play, App Store). Esses servi&ccedil;os gratuitos para an&uacute;ncios estar&atilde;o dispon&iacute;veis para o usu&aacute;rio somente quando o usu&aacute;rio estiver conectado a nossos servi&ccedil;os.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Pagamento: Para comprar servi&ccedil;os sem an&uacute;ncios, o usu&aacute;rio ser&aacute; obrigado a pagar um pagamento anual usando um m&eacute;todo de pagamento disponibilizado para o usu&aacute;rio. Para que o usu&aacute;rio efetue a compra, vamos direcion&aacute;-lo para os sites de provedores de servi&ccedil;os de pagamento confi&aacute;veis e seguros contratados. &nbsp;O usu&aacute;rio pode ser obrigado a compartilhar com os prestadores de servi&ccedil;os de pagamento suas informa&ccedil;&otilde;es pessoais (como seu nome, endere&ccedil;o, n&uacute;mero de identidade), informa&ccedil;&otilde;es financeiras (por exemplo, seu n&uacute;mero de cart&atilde;o de cr&eacute;dito, conta banc&aacute;ria, etc.) e qualquer outra informa&ccedil;&atilde;o exigida pelo pagamento dos prestadores de servi&ccedil;os contratados para completar a compra dos Servi&ccedil;os sem an&uacute;ncios. Podemos alterar as taxas dos Servi&ccedil;os sem notifica&ccedil;&atilde;o ou aviso pr&eacute;vios de tempos em tempos e a nosso exclusivo crit&eacute;rio.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Renova&ccedil;&otilde;es: os servi&ccedil;os sem an&uacute;ncios s&atilde;o renovados automaticamente todos os anos e as cobran&ccedil;as s&atilde;o feitas automaticamente pelo provedor do servi&ccedil;o de pagamento, que o usu&aacute;rio usou inicialmente para comprar os servi&ccedil;os gratuitos.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio poder&aacute; cancelar os Servi&ccedil;os sem an&uacute;ncios a qualquer momento desde que informe expressamente a Empresa.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Aviso Legal</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Devido ao n&uacute;mero de fontes a partir das quais o conte&uacute;do apresentado no Site &eacute; obtido e os riscos inerentes &agrave; distribui&ccedil;&atilde;o eletr&ocirc;nica, pode haver atrasos, omiss&otilde;es ou imprecis&otilde;es nesse conte&uacute;do e no Site.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O CONTE&Uacute;DO E O SITE WEB S&Atilde;O FORNECIDOS &quot;NO ESTADO EM QUE SE ENCONTRAM&quot;, SEM QUALQUER GARANTIA. A DXRCOINTRADE, SEUS EMPREGADOS, OFICIAIS, DIRETORES, AFILIADOS, AGENTES E LICENCIANTES N&Atilde;O PODEM E N&Atilde;O GARANTEM A PRECIS&Atilde;O, INTEGRIDADE, N&Atilde;O INFRA&Ccedil;&Atilde;O, COMERCIALIZA&Ccedil;&Atilde;O OU APTID&Atilde;O PARA UM PROP&Oacute;SITO ESPEC&Iacute;FICO DO CONTE&Uacute;DO DISPON&Iacute;VEL ATRAV&Eacute;S DO SITE, E DXRCOINTRADE N&Atilde;O OFERECE QUALQUER GARANTIA EXPRESSA OU IMPL&Iacute;CITA.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">EM NENHUMA CIRCUNST&Acirc;NCIA A DXRCOINTRADE, SEUS EMPREGADOS, OFICIAIS, DIRETORES, AFILIADOS, AGENTES OU LICENCIADORES SER&Atilde;O RESPONS&Aacute;VEIS &nbsp;PELO USU&Aacute;RIO OU POR QUALQUER TERCEIRO OU POR QUALQUER OUTRO SOBRE QUALQUER TIPO DE PERDA FINANCEIRA, LUCROS PERDIDOS, QUALQUER DANO ESPECIAL, INCIDENTAL OU CONSEQUENTE OU QUALQUER OUTRO DANO SIMILAR OU QUALQUER OUTRA PERDA OU PREJU&Iacute;ZO, RESULTANDO DIRETAMENTE OU INDIRETAMENTE DA UTILIZA&Ccedil;&Atilde;O DO SITE, CAUSADO INTEGRALMENTE OU EM PARTE POR NEGLIG&Ecirc;NCIA OU CONTING&Ecirc;NCIAS TERCEIRAS, AL&Eacute;M DE SEU CONTROLE NA REPRODU&Ccedil;&Atilde;O, COMPILA&Ccedil;&Atilde;O, INTERPRETA&Ccedil;&Atilde;O DE RELAT&Oacute;RIOS OU INFORMA&Ccedil;&Otilde;ES DO SITE E DE QUALQUER CONTE&Uacute;DO APRESENTADO NO SITE.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">EM NENHUMA CIRCUNST&Acirc;NCIA, A DXRCOINTRADE, SEUS EMPREGADOS, OFICIAIS, DIRETORES, AFILIADOS, AGENTES OU LICENCIANTES SER&Atilde;O RESPONS&Aacute;VEIS POR TERCEIRAS PARTES POR QUALQUER DECIS&Atilde;O OU A&Ccedil;&Atilde;O TOMADA POR CONTA E A&Ccedil;&Atilde;O EXCLUSIVA DO USU&Aacute;RIO EM CONFIAN&Ccedil;A EM CONTE&Uacute;DOS REPRODUZIDOS E APRESENTADOS NO SITE.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Restri&ccedil;&otilde;es Legais</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Sem limitar o que precede, o usu&aacute;rio entende que as leis relativas aos contratos financeiros variam em todo o mundo, e &eacute; obriga&ccedil;&atilde;o do usu&aacute;rio garantir o cumprimento integral de qualquer lei vinculativa e vigente, regulamentar ou diretiva, aplic&aacute;vel ao seu pa&iacute;s de resid&ecirc;ncia no que diz respeito ao uso local do Site. A capacidade de acesso ao nosso Site n&atilde;o significa necessariamente que nossos Servi&ccedil;os e / ou suas atividades atrav&eacute;s do Site sejam legais nos termos das leis, regulamentos ou diretrizes aplic&aacute;veis ​​ao seu pa&iacute;s de resid&ecirc;ncia.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Este Site n&atilde;o constitui e n&atilde;o pode ser usado para fins de uma oferta ou solicita&ccedil;&atilde;o a qualquer pessoa em qualquer jurisdi&ccedil;&atilde;o em que tal oferta ou solicita&ccedil;&atilde;o n&atilde;o seja autorizada ou a qualquer pessoa a quem seja ilegal fazer uma oferta ou solicita&ccedil;&atilde;o. O acesso a este Site e a oferta de contratos financeiros atrav&eacute;s deste Site podem ser restritos em certas jurisdi&ccedil;&otilde;es e, portanto, os usu&aacute;rios que acessam este Site devem informar-se e observar tais restri&ccedil;&otilde;es.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Licen&ccedil;a Limitada</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade concede-lhe uma licen&ccedil;a pessoal n&atilde;o exclusiva, intransfer&iacute;vel e limitada para acessar e usar o Site (a &quot;Licen&ccedil;a&quot;). Esta Licen&ccedil;a est&aacute; condicionada &agrave; sua conformidade total e cont&iacute;nua com estes Termos e Condi&ccedil;&otilde;es. &nbsp;O usu&aacute;rio concorda em n&atilde;o aplicar &quot;links&rdquo; no Site, para revender ou permitir o acesso ao Site por outros e n&atilde;o copiar os materiais que aparecem no Site para revenda ou para qualquer outro prop&oacute;sito para terceiros sem o pr&eacute;vio consentimento por escrito da Dxrcointrade. &nbsp;O usu&aacute;rio ser&aacute; respons&aacute;vel e vinculado por qualquer uso n&atilde;o autorizado do Site, feito em viola&ccedil;&atilde;o desta se&ccedil;&atilde;o. &nbsp;O usu&aacute;rio concorda em n&atilde;o usar qualquer recurso de comunica&ccedil;&atilde;o eletr&ocirc;nica dos Servi&ccedil;os no Site para qualquer finalidade que seja ilegal, tortuosa, abusiva e intrusiva na privacidade, hostilidade, difama&ccedil;&atilde;o, embara&ccedil;o, obscenidade, amea&ccedil;a ou manifesta&ccedil;&atilde;o de &oacute;dio. A Licen&ccedil;a concedida de acordo com estes Termos e Condi&ccedil;&otilde;es terminar&aacute; se a Dxrcointrade acreditar que qualquer informa&ccedil;&atilde;o fornecida pelo usu&aacute;rio, incluindo (mas n&atilde;o limitado a) suas Credenciais de Registro, n&atilde;o &eacute; mais atual ou precisa, ou se o usu&aacute;rio n&atilde;o cumprir com qualquer termo ou condi&ccedil;&atilde;o destes Termos e Condi&ccedil;&otilde;es e todas as regras e diretrizes para cada um dos Servi&ccedil;os. Ap&oacute;s essa viola&ccedil;&atilde;o, o usu&aacute;rio concorda em deixar de acessar os Servi&ccedil;os. &nbsp;O usu&aacute;rio concorda que a Dxrcointrade, a seu exclusivo crit&eacute;rio, e com ou sem aviso pr&eacute;vio, pode rescindir seu acesso a qualquer ou todos os Servi&ccedil;os e remover e descartar qualquer informa&ccedil;&atilde;o ou conte&uacute;do dentro dos Servi&ccedil;os.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Links para Sites de Terceiros</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Este Site cont&eacute;m hiperlinks para outros sites operados por pessoas que n&atilde;o a Dxrcointrade. Esses hiperlinks s&atilde;o fornecidos apenas para sua refer&ecirc;ncia e conveni&ecirc;ncia. &nbsp;O usu&aacute;rio concorda em n&atilde;o responsabilizar a Dxrcointrade pelo conte&uacute;do ou opera&ccedil;&atilde;o de tais sites. Um hiperlink deste site para outro site n&atilde;o implica que o Dxrcointrade respalda o conte&uacute;do desse site ou do operador ou opera&ccedil;&otilde;es desse site. &nbsp;O usu&aacute;rio &eacute; o &uacute;nico respons&aacute;vel por determinar a medida em que o usu&aacute;rio pode usar qualquer conte&uacute;do em outros sites da Web a que o usu&aacute;rio possa vincular a partir do Site.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Se o usu&aacute;rio deseja fazer compras de uma &aacute;rea do Site, o usu&aacute;rio pode ser solicitado a fornecer certas informa&ccedil;&otilde;es, incluindo cart&atilde;o de cr&eacute;dito, cart&atilde;o de d&eacute;bito ou outra informa&ccedil;&atilde;o do processo de pagamento.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio concorda em n&atilde;o responsabilizar a Dxrcointrade por qualquer perda ou dano causado por qualquer tipo de transa&ccedil;&otilde;es. &nbsp;O usu&aacute;rio concorda que todas as informa&ccedil;&otilde;es fornecidas em conex&atilde;o com essa compra ser&atilde;o precisas, completas e atualizadas. &nbsp;O usu&aacute;rio concorda em pagar todos os encargos incorridos com o uso de seu cart&atilde;o de cr&eacute;dito, cart&atilde;o de d&eacute;bito ou outro mecanismo de pagamento aos pre&ccedil;os vigentes quando esses encargos s&atilde;o incorridos. &nbsp;O usu&aacute;rio tamb&eacute;m pagar&aacute; os impostos aplic&aacute;veis ​​em rela&ccedil;&atilde;o a qualquer compra que o usu&aacute;rio realizar.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A RESPONSABILIDADE DE DXRCOINTRADE, SEUS FUNCION&Aacute;RIOS, DIRETORES OU EMPREGADOS, PARA OUTROS OU QUALQUER TERCEIROS EM QUALQUIER CIRCUNST&Acirc;NCIA SE LIMITA &Agrave; QUANTIDADE DE DINHEIRO QUE O USU&Aacute;RIO TRANSFERIU A DXRCOINTRADE EM RELA&Ccedil;&Atilde;O &Agrave; TRANSA&Ccedil;&Atilde;O QUE D&Aacute; RESPALDO A TAL RESPONSABILIDADE.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Informa&ccedil;&atilde;o de Mercado</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A DXRCOINTRADE pode disponibilizar ao usu&aacute;rio atrav&eacute;s de um ou mais de seus Servi&ccedil;os uma ampla gama de informa&ccedil;&otilde;es financeiras que s&atilde;o geradas internamente ou obtidas de agentes, fornecedores ou parceiros (&quot;Provedores de Terceiros&quot;). Isso inclui, mas n&atilde;o est&aacute; limitado a dados do mercado financeiro, cita&ccedil;&otilde;es, not&iacute;cias, pareceres de analistas, relat&oacute;rios de pesquisa, gr&aacute;ficos e dados (&quot;Informa&ccedil;&otilde;es de Mercado&quot;).</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">As informa&ccedil;&otilde;es de mercado fornecidas no Site n&atilde;o se destinam a conselho de investimento. A DXRCOINTRADE n&atilde;o endossa ou aprova as Informa&ccedil;&otilde;es do Mercado, e a disponibilizamos apenas como um servi&ccedil;o para a pr&oacute;pria conveni&ecirc;ncia aos usu&aacute;rios. A DXRCOINTRADE e seus Provedores de terceiros n&atilde;o garantem a precis&atilde;o, a pontualidade, a integridade ou o processamento correto da Informa&ccedil;&atilde;o de Mercado, ou garantem quaisquer resultados de seu uso ou depend&ecirc;ncia da Informa&ccedil;&atilde;o de Mercado.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Informa&ccedil;&atilde;o de Mercado pode tornar-se rapidamente n&atilde;o confi&aacute;vel por v&aacute;rias raz&otilde;es, incluindo, por exemplo, mudan&ccedil;as nas condi&ccedil;&otilde;es do mercado ou nas circunst&acirc;ncias econ&ocirc;micas. Nem a Dxrcointrade nem os Fornecedores terceiros s&atilde;o obrigados a atualizar quaisquer informa&ccedil;&otilde;es ou opini&otilde;es contidas em qualquer Informa&ccedil;&atilde;o de Mercado, e podemos interromper a oferta de informa&ccedil;&otilde;es de mercado a qualquer momento sem aviso pr&eacute;vio. &nbsp;O usu&aacute;rio concorda que nem a DXRCOINTRADE nem os Fornecedores terceiros ser&atilde;o respons&aacute;veis, de qualquer forma, pelo encerramento, interrup&ccedil;&atilde;o, atraso ou imprecis&atilde;o de qualquer Informa&ccedil;&atilde;o de Mercado. &nbsp;O usu&aacute;rio n&atilde;o usar&aacute; &quot;links&quot;, ou redistribuir&aacute; ou facilitar&aacute; a redistribui&ccedil;&atilde;o de Informa&ccedil;&otilde;es de Mercado, nem fornecer&aacute; acesso a informa&ccedil;&otilde;es de mercado a qualquer pessoa que n&atilde;o esteja autorizada expressamente pela DXRCOINTRADE a receber informa&ccedil;&otilde;es sobre o mercado.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Uso e Acesso ao Site</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio ser&aacute; respons&aacute;vel por fornecer e manter os meios pelos quais o usu&aacute;rio acessa o Site, que pode incluir, mas n&atilde;o est&aacute; limitado a seu computador pessoal ou dispositivo m&oacute;vel, hardware de conectividade e linhas de telecomunica&ccedil;&otilde;es (conex&atilde;o).</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio ser&aacute; respons&aacute;vel por todas as taxas de acesso e servi&ccedil;o necess&aacute;rias para se conectar ao Site e assumir todos os encargos incorridos com o uso de tais servi&ccedil;os de conectividade. Al&eacute;m disso, assume todos os riscos associados ao uso e armazenamento de informa&ccedil;&otilde;es em seu computador pessoal, dispositivo m&oacute;vel ou em qualquer outro computador ou dispositivo atrav&eacute;s do qual o usu&aacute;rio ter&aacute; acesso ao Site e aos Servi&ccedil;os (doravante denominado &quot;Computador&quot;).</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio representa e garante que o usu&aacute;rio implementou e planeja operar e manter uma prote&ccedil;&atilde;o adequada em rela&ccedil;&atilde;o &agrave; seguran&ccedil;a e controle de seu Computador e quaisquer informa&ccedil;&otilde;es e dados inclu&iacute;dos neles.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio concorda que a DXRCOINTRADE n&atilde;o ser&aacute; respons&aacute;vel de qualquer forma em caso de falha ou danos ou destrui&ccedil;&atilde;o em seus sistemas, dados ou registros de computador, ou qualquer parte dele, ou por atrasos, perdas, erros ou omiss&otilde;es resultantes da falha ou m&aacute; gest&atilde;o de qualquer equipamento ou software de telecomunica&ccedil;&otilde;es ou inform&aacute;tica.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio n&atilde;o ir&aacute; de modo algum, direta ou indiretamente, expor a Dxrcointrade ou qualquer um dos provedores de servi&ccedil;os online contratados pela DXRCOINTRADE a qualquer v&iacute;rus de computador ou outro material ou dispositivo prejudicial ou inapropriado.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Direitos da Empresa</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade reserva-se o direito de suspender a opera&ccedil;&atilde;o deste Site ou de qualquer parte ou se&ccedil;&otilde;es dele a qualquer momento e nenhuma reclama&ccedil;&atilde;o pode ser movida contra a Empresa em rela&ccedil;&atilde;o a isso.</span></p>
+
+                                            <p style="text-align: justify;"><br />
+                                            &nbsp;</p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">For&ccedil;a Maior</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio concorda que a Dxrcointrade n&atilde;o ser&aacute; respons&aacute;vel de nenhuma forma tanto pelo usu&aacute;rio ou por qualquer outra pessoa em caso de for&ccedil;a maior (incluindo, mas n&atilde;o limitado ao ato de qualquer governo ou autoridade legal) ou por falha ou danos ou destrui&ccedil;&atilde;o dos seus sistemas inform&aacute;ticos e infraestrutura, dados ou registros ou qualquer parte deles, ou por atrasos, perdas, erros ou omiss&otilde;es resultantes da falha ou m&aacute; gest&atilde;o de qualquer equipamento ou software de telecomunica&ccedil;&otilde;es ou inform&aacute;tica.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Problemas T&eacute;cnicos</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio entende que, enquanto a Internet e a Worldwide Web s&atilde;o confi&aacute;veis, mas problemas t&eacute;cnicos ou outras condi&ccedil;&otilde;es eventuais podem atrasar ou impedir que o usu&aacute;rio acesse o Site.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade n&atilde;o ser&aacute; respons&aacute;vel e o usu&aacute;rio concorda em n&atilde;o responsabilizar ou tentar atribuir qualquer responsabilidade a Dxrcointrade ou qualquer um dos seus agentes ou prestadores de servi&ccedil;os respons&aacute;veis ​​por quaisquer problemas t&eacute;cnicos, falhas do sistema e avarias, falhas na linha de comunica&ccedil;&atilde;o, falhas de equipamentos ou software ou falhas de funcionamento, problemas de acesso ao sistema, problemas de capacidade do sistema, alta demanda de tr&aacute;fego na Internet, brechas de seguran&ccedil;a e acesso n&atilde;o autorizado, e outros problemas e defeitos de computadores similares.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade n&atilde;o assume ou garante que o usu&aacute;rio poder&aacute; acessar ou usar o Site em momentos ou locais de sua escolha, ou que a Dxrcointrade tenha capacidade adequada para o Site como um todo ou em qualquer localiza&ccedil;&atilde;o geogr&aacute;fica.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade n&atilde;o assumi ou garante que o Site fornecer&aacute; um servi&ccedil;o ininterrupto e sem erros. A Dxrcointrade n&atilde;o d&aacute; garantias em rela&ccedil;&atilde;o ao Site e ao seu conte&uacute;do, incluindo, entre outras, garantias para comercializa&ccedil;&atilde;o ou adequa&ccedil;&atilde;o para um prop&oacute;sito espec&iacute;fico.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Sem limitar o anterior, a Dxrcointrade n&atilde;o ser&aacute; respons&aacute;vel por uma impossibilidade de executar transa&ccedil;&otilde;es e requisitos devido a falhas no funcionamento de sistemas informatizados causados ​​por falhas t&eacute;cnicas, que est&atilde;o fora de seu controle.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Marcas Registradas, Propriedade e Direitos Autorais</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Todos os direitos, t&iacute;tulos e interesses em e para os conte&uacute;dos do Site, e as marcas comerciais, marcas de servi&ccedil;os, nomes comerciais e log&oacute;tipos &quot;dxrcointrade.com&quot; e &quot;Dxrcointrade&quot; s&atilde;o propriedade da Dxrcointrade ou de suas afiliadas ou de outros licenciadores e est&atilde;o protegidos por leis de direitos autorais e de propriedade de marcas comerciais e tratados internacionais.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio concorda em n&atilde;o excluir quaisquer avisos de direitos autorais ou outras indica&ccedil;&otilde;es de direitos de propriedade intelectual protegidos de materiais que o usu&aacute;rio imprima ou fa&ccedil;a o download a partir do Site. O usu&aacute;rio n&atilde;o obter&aacute; nenhum direito de propriedade intelectual ou qualquer direito ou licen&ccedil;a para usar esses materiais ou o Site, exceto como expressamente estabelecido nestes Termos e Condi&ccedil;&otilde;es.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">As imagens exibidas no Site s&atilde;o propriedade da Dxrcointrade ou de seus licenciadores. &nbsp;O usu&aacute;rio concorda em n&atilde;o fazer upload, publicar, reproduzir ou distribuir qualquer informa&ccedil;&atilde;o, software ou outro material protegido por direitos autorais ou qualquer outro direito de propriedade intelectual (bem como direitos de publicidade e privacidade) sem antes obter a permiss&atilde;o do propriet&aacute;rio desses direitos e consentimento pr&eacute;vio por escrito da Dxrcointrade.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Nada contido no Site pode ser interpretado como concess&atilde;o, por implica&ccedil;&atilde;o, impedimento ou de outra forma, de qualquer licen&ccedil;a ou direito de usar qualquer marca registrada sem a permiss&atilde;o expressa da Dxrcointrade ou de terceiros que possam possuir as marcas registradas. O uso de marcas registradas ou qualquer outro conte&uacute;do do Site, exceto conforme previsto neste documento, &eacute; estritamente proibido.</span></p>
+
+                                            <p style="text-align: justify;">&nbsp;</p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Viola&ccedil;&atilde;o</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio concorda em indenizar, defender e isentar integralmente a Dxrcointrade, suas afiliadas corporativas e seus respectivos diretores, diretores e funcion&aacute;rios imediatamente ap&oacute;s a demanda de e contra todas as reivindica&ccedil;&otilde;es, demandas, responsabilidades, danos, perdas, custos e despesas, incluindo honor&aacute;rios legais e outros quaisquer cobran&ccedil;as, seja qual for o motivo, que possam surgir como resultado de: (i) qualquer viola&ccedil;&atilde;o destes Termos e Condi&ccedil;&otilde;es pelo usu&aacute;rio ou (ii) viola&ccedil;&atilde;o pelo usu&aacute;rio de qualquer lei ou direitos de terceiros.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Sem preju&iacute;zo de quaisquer outros direitos nestes Termos e Condi&ccedil;&otilde;es, se o usu&aacute;rio violar total ou parcialmente qualquer disposi&ccedil;&atilde;o aqui contida, a Dxrcointrade ou qualquer uma das suas afiliadas corporativas que lhe prestam Servi&ccedil;os se reserva o direito de tomar as medidas que julgar adequadas, incluindo (mas n&atilde;o limitado a) rescindir qualquer acordo em vigor com o usu&aacute;rio, encerrar ou bloquear os Servi&ccedil;os que lhe s&atilde;o oferecidos atrav&eacute;s do Site e/ou tomar medidas legais cab&iacute;veis contra o usu&aacute;rio.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Lei Aplic&aacute;vel e Jurisdi&ccedil;&atilde;o Jur&iacute;dica</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Estes Termos e Condi&ccedil;&otilde;es ser&atilde;o regidos pelas leis brasileiras, independentemente dos conflitos de seus princ&iacute;pios legais. Este &eacute; o caso, independentemente de o usu&aacute;rio residir ou realizar neg&oacute;cios com a Dxrcointrade em qualquer outro lugar do mundo.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Se qualquer parte destes Termos e Condi&ccedil;&otilde;es for considerada ilegal, nula ou inexequ&iacute;vel, essa parte ser&aacute; considerada separ&aacute;vel e n&atilde;o afetar&aacute; a validade e exequibilidade de quaisquer termos e condi&ccedil;&otilde;es remanescentes.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Jurisdi&ccedil;&atilde;o Exclusiva do Tribunal: &nbsp;o usu&aacute;rio concorda em submeter &agrave; jurisdi&ccedil;&atilde;o pessoal e exclusiva dos tribunais localizados no Brasil para resolver qualquer disputa, que possa surgir em rela&ccedil;&atilde;o a isso.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Condi&ccedil;&otilde;es Especiais Aplic&aacute;veis ​​&agrave;s Ferramentas</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade poder&aacute; disponibilizar determinadas ferramentas comerciais e de investimento (as &quot;Ferramentas&quot;) que poder&atilde;o ser integradas no Site atrav&eacute;s do c&oacute;digo HTML dispon&iacute;vel na se&ccedil;&atilde;o &quot;Ferramentas&quot; do Site (o &quot;C&oacute;digo&quot;). Estas condi&ccedil;&otilde;es especiais (as &quot;Condi&ccedil;&otilde;es Especiais&quot;) constituem uma parte dos Termos e Condi&ccedil;&otilde;es e ambas s&atilde;o aplic&aacute;veis ​​aos usu&aacute;rios que eventualmente venham a integrar as Ferramentas em seus pr&oacute;prios sites. Em caso de conflito entre uma provis&atilde;o destas Condi&ccedil;&otilde;es Especiais e qualquer outra disposi&ccedil;&atilde;o dos Termos e Condi&ccedil;&otilde;es, prevalecer&atilde;o as Condi&ccedil;&otilde;es Especiais.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade n&atilde;o &eacute; nem pode garantir ou assumir que qualquer informa&ccedil;&atilde;o e dados disponibilizados atrav&eacute;s das Ferramentas s&atilde;o em tempo real, precisos, completos, atuais ou apropriados para suas necessidades. Certas informa&ccedil;&otilde;es e dados disponibilizados atrav&eacute;s das Ferramentas s&atilde;o obtidos de Provedores Terceiros (definidos acima) que geralmente s&atilde;o entendidos como fontes de informa&ccedil;&otilde;es e dados confi&aacute;veis. No entanto, devido a uma variedade de fatores diferentes, incluindo erros mec&acirc;nicos e humanos, a atualiza&ccedil;&atilde;o, a integridade, a precis&atilde;o e o processamento correto de tais informa&ccedil;&otilde;es e dados e os resultados obtidos por sua utiliza&ccedil;&atilde;o n&atilde;o s&atilde;o garantidos pela Dxrcointrade.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">TODAS AS INFORMA&Ccedil;&Otilde;ES E DADOS DISPONIBILIZADOS PELAS FERRAMENTAS S&Atilde;O FORNECIDAS PARA FINS INFORMATIVOS SOMENTE, E N&Atilde;O S&Atilde;O DESTINADAS A FINS DE NEGOCIA&Ccedil;&Otilde;ES OU A TRANSA&Ccedil;&Otilde;ES DE MERCADO.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade pode integrar publicidade e links para sites de terceiros nas Ferramentas, mas n&atilde;o endossa essa publicidade ou os conte&uacute;dos e servi&ccedil;os fornecidos em sites de terceiros acess&iacute;veis atrav&eacute;s das Ferramentas. &nbsp;O usu&aacute;rio n&atilde;o poder&aacute; modificar, remover, alterar, editar, alterar, alterar, cobrir, ocultar, bloquear, obscurecer, ignorar ou reordenar qualquer aspecto da publicidade e links mencionados acima.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio n&atilde;o ter&aacute; direito a nenhuma compensa&ccedil;&atilde;o em conex&atilde;o com a integra&ccedil;&atilde;o do an&uacute;ncio dentro das Ferramentas.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">A Dxrcointrade e seus funcion&aacute;rios, diretores, diretores, afiliados, agentes ou licenciadores n&atilde;o ser&atilde;o respons&aacute;veis ​​perante &nbsp;o usu&aacute;rio ou qualquer terceiro por qualquer perda financeira, perda de lucros, qualquer dano especial, incidental ou consequente ou qualquer outro dano similar ou qualquer outra perda ou les&atilde;o, decorrente de atrasos, erros informativos, imprecis&atilde;o ou incompletude das informa&ccedil;&otilde;es e dados fornecidos nas Ferramentas ou quaisquer a&ccedil;&otilde;es tomadas com base nela, ou para a publicidade ou conte&uacute;do e servi&ccedil;os fornecidos em sites de terceiros acess&iacute;veis atrav&eacute;s do Ferramentas.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Sujeito aos termos e condi&ccedil;&otilde;es aqui estabelecidos, a Dxrcointrade concede ao usu&aacute;rio uma licen&ccedil;a n&atilde;o exclusiva, intransfer&iacute;vel e limitada para acessar e usar as Ferramentas exclusivamente para seu uso pessoal e n&atilde;o comercial (a &quot;Licen&ccedil;a de Ferramentas&quot;). Se o usu&aacute;rio estiver usando as Ferramentas para fins comerciais, a Dxrcointrade concede uma licen&ccedil;a exclusiva, n&atilde;o transfer&iacute;vel e limitada, por um per&iacute;odo de teste de um (1) m&ecirc;s para acessar e usar as Ferramentas (a &quot;Licen&ccedil;a de Teste&quot;) (a &quot;Licen&ccedil;a de Ferramentas&quot; juntamente com a &quot;Licen&ccedil;a de Teste&quot; s&atilde;o a seguir denominadas &quot;Licen&ccedil;as&quot;). Ap&oacute;s a expira&ccedil;&atilde;o da licen&ccedil;a de avalia&ccedil;&atilde;o, o usu&aacute;rio concorda em celebrar um contrato separado com a Dxrcointrade para continuar usando as Ferramentas. A Dxrcointrade tem o &uacute;nico crit&eacute;rio para decidir se o uso das Ferramentas &eacute; comercial ou n&atilde;o comercial.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">As Licen&ccedil;as est&atilde;o condicionadas &agrave; sua conformidade completa e cont&iacute;nua com estes Termos e Condi&ccedil;&otilde;es (incluindo as Condi&ccedil;&otilde;es Especiais). &nbsp;O usu&aacute;rio concorda em n&atilde;o revender ou permitir o acesso &agrave;s Ferramentas a outros e n&atilde;o copiar os materiais que aparecem nas Ferramentas para revenda para terceiros ou para qualquer outro prop&oacute;sito sem o consentimento pr&eacute;vio e expresso da Dxrcointrade. &nbsp;O usu&aacute;rio concorda em n&atilde;o usar as Ferramentas para qualquer prop&oacute;sito ilegal. As Licen&ccedil;as podem ser canceladas se o usu&aacute;rio n&atilde;o cumprir qualquer termo ou condi&ccedil;&atilde;o desses Termos e Condi&ccedil;&otilde;es (incluindo as Condi&ccedil;&otilde;es Especiais). Ap&oacute;s qualquer viola&ccedil;&atilde;o, o usu&aacute;rio concorda em deixar de usar as Ferramentas. &nbsp;O usu&aacute;rio concorda que a Dxrcointrade, a seu exclusivo crit&eacute;rio e com ou sem aviso pr&eacute;vio, pode encerrar seu acesso a qualquer ou todas as Ferramentas e remover e descartar qualquer informa&ccedil;&atilde;o ou conte&uacute;do dentro das Ferramentas a qualquer momento, inclusive durante a Licen&ccedil;a de Teste.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">N&atilde;o obstante a concess&atilde;o das Licen&ccedil;as, &nbsp;o usu&aacute;rio concorda e reconhece que todos os direitos, t&iacute;tulos e interesses em e para as Ferramentas, o C&oacute;digo e todas as informa&ccedil;&otilde;es e dados disponibilizados no mesmo, incluindo (mas n&atilde;o limitado a) marcas registradas, sinais, nomes comerciais, nomes de dom&iacute;nio Imagens, imagens, gr&aacute;ficos, fotografias, anima&ccedil;&otilde;es, v&iacute;deos, m&uacute;sica, &aacute;udio e texto pertencem &agrave; Dxrcointrade, aos seus afiliados e / ou aos Provedores de terceiros (conforme o caso) e est&atilde;o protegidos por direitos autorais e / ou outros direitos de propriedade intelectual e/ou outros direitos.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">O usu&aacute;rio n&atilde;o tem permiss&atilde;o para fazer altera&ccedil;&otilde;es ao C&oacute;digo, incluindo (mas n&atilde;o limitado a) altera&ccedil;&otilde;es que escondam ou obscurecem publicidade e links para a Dxrcointrade ou para sites de terceiros acess&iacute;veis atrav&eacute;s das Ferramentas. &nbsp;O usu&aacute;rio n&atilde;o pode contornar qualquer mecanismo inclu&iacute;do no C&oacute;digo e/ou Ferramentas para impedir a reprodu&ccedil;&atilde;o ou distribui&ccedil;&atilde;o n&atilde;o autorizada. Sem preju&iacute;zo de qualquer outro direito, a Dxrcointrade tem o direito de bloquear imediatamente o uso das Ferramentas no Site no caso do usu&aacute;rio violar essas disposi&ccedil;&otilde;es.</span></p>
+
+                                            <p dir="ltr" style="text-align: justify;"><span style="color:#000000">Nada nestes Termos e Condi&ccedil;&atilde;o criar&aacute; qualquer obriga&ccedil;&atilde;o na Dxrcointrade para buscar ou consumar qualquer neg&oacute;cio ou outra rela&ccedil;&atilde;o com o usu&aacute;rio.</span></p>
+
+                                            <div class="modal-footer">
+                                                <div id="resUpdate" class="resUpdate">
+                                                </div>
+                                                <button type="button" data-dismiss="modal" class="btn btn-alt-success">Ok</button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIM DO MODAL -->
+
+                </div> 
+
+
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" style="background: linear-gradient(to right, #f39c32 0%, #f27135 100%); border-radius:5px; border-width:0px; padding: 11px; margin-bottom:40px;">Finish Registration</button>
+                </div><!-- /.col -->
+
+        </form>
+
+</div><!-- /.register-box -->
+<div  id='modal_pais' class="modal" data-backdrop="static" data-keyboard="false" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p>
+
+            <div class="modal-header">
+                <h4 class="modal-title">Selecione o seu país!</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <select  data-required="true" class="form-control m-t" name="pais" id="pais" required>
+                        <option value="" selected="selected">Selecione o seu país</option>
+                        <option value="Afganistan">Afghanistan</option>
+                        <option value="Albania">Albania</option>
+                        <option value="Algeria">Algeria</option>
+                        <option value="American Samoa">American Samoa</option>
+                        <option value="Andorra">Andorra</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Anguilla">Anguilla</option>
+                        <option value="Antigua &amp; Barbuda">Antigua &amp; Barbuda</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armenia">Armenia</option>
+                        <option value="Aruba">Aruba</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Austria">Austria</option>
+                        <option value="Azerbaijan">Azerbaijan</option>
+                        <option value="Bahamas">Bahamas</option>
+                        <option value="Bahrain">Bahrain</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Barbados">Barbados</option>
+                        <option value="Belarus">Belarus</option>
+                        <option value="Belgium">Belgium</option>
+                        <option value="Belize">Belize</option>
+                        <option value="Benin">Benin</option>
+                        <option value="Bermuda">Bermuda</option>
+                        <option value="Bhutan">Bhutan</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Bonaire">Bonaire</option>
+                        <option value="Bosnia &amp; Herzegovina">Bosnia &amp; Herzegovina</option>
+                        <option value="Botswana">Botswana</option>
+                        <option value="Bt" selected="">Brasil</option>
+                        <option value="British Indian Ocean Ter">British Indian Ocean Ter</option>
+                        <option value="Brunei">Brunei</option>
+                        <option value="Bulgaria">Bulgaria</option>
+                        <option value="Burkina Faso">Burkina Faso</option>
+                        <option value="Burundi">Burundi</option>
+                        <option value="Cambodia">Cambodia</option>
+                        <option value="Cameroon">Cameroon</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Canary Islands">Canary Islands</option>
+                        <option value="Cape Verde">Cape Verde</option>
+                        <option value="Cayman Islands">Cayman Islands</option>
+                        <option value="Central African Republic">Central African Republic</option>
+                        <option value="Chad">Chad</option>
+                        <option value="Channel Islands">Channel Islands</option>
+                        <option value="Chile">Chile</option>
+                        <option value="China">China</option>
+                        <option value="Christmas Island">Christmas Island</option>
+                        <option value="Cocos Island">Cocos Island</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Comoros">Comoros</option>
+                        <option value="Congo">Congo</option>
+                        <option value="Cook Islands">Cook Islands</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                        <option value="Cote DIvoire">Cote D'Ivoire</option>
+                        <option value="Croatia">Croatia</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Curaco">Curacao</option>
+                        <option value="Cyprus">Cyprus</option>
+                        <option value="Czech Republic">Czech Republic</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="Djibouti">Djibouti</option>
+                        <option value="Dominica">Dominica</option>
+                        <option value="Dominican Republic">Dominican Republic</option>
+                        <option value="East Timor">East Timor</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="El Salvador">El Salvador</option>
+                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                        <option value="Eritrea">Eritrea</option>
+                        <option value="Estonia">Estonia</option>
+                        <option value="Ethiopia">Ethiopia</option>
+                        <option value="Falkland Islands">Falkland Islands</option>
+                        <option value="Faroe Islands">Faroe Islands</option>
+                        <option value="Fiji">Fiji</option>
+                        <option value="Finland">Finland</option>
+                        <option value="France">France</option>
+                        <option value="French Guiana">French Guiana</option>
+                        <option value="French Polynesia">French Polynesia</option>
+                        <option value="French Southern Ter">French Southern Ter</option>
+                        <option value="Gabon">Gabon</option>
+                        <option value="Gambia">Gambia</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Ghana">Ghana</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="submit" id="selected_pais" class="btn btn-primary">Prosseguir com cadastro</button>
+                </p>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</div>
+@include('layouts.partials.scripts_auth')
+
+<script>
+    function mascaraTelefone(campo) {
+
+        function trata(valor, isOnBlur) {
+
+            valor = valor.replace(/\D/g, "");
+            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+            if (isOnBlur) {
+
+                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+            } else {
+
+                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+            }
+            return valor;
+        }
+
+        campo.onkeypress = function (evt) {
+
+            var code = (window.event) ? window.event.keyCode : evt.which;
+            var valor = this.value
+
+            if (code > 57 || (code < 48 && code != 8)) {
+                return false;
+            } else {
+                this.value = trata(valor, false);
+            }
+        }
+
+        campo.onblur = function () {
+
+            var valor = this.value;
+            if (valor.length < 13) {
+                this.value = ""
+            } else {
+                this.value = trata(this.value, true);
+            }
+        }
+
+        campo.maxLength = 14;
+    }
+    if ($("#cadastro_exterior").val() == '') {
+        $("#modal_pais").modal();
+    }
+    $("#cpf").inputmask("999.999.999-99");
+
+    $("#selected_pais").click(function () {
+        pais = $("#pais").val();
+        if (pais == 'Br') {
+            $('.cpf').inputmask("999.999.999-99");
+            $('.cep').inputmask("99999-999", {"oncomplete": function () {
+                    buscaCep();
+                }});
+            $("[data-mask]").inputmask();
+            $("#cadastro_exterior").val('0');
+            mascaraTelefone(formcadastro.telefone);
+        } else {
+            $("#cadastro_exterior").val('1');
+            $('.cpf').attr('placeholder', 'Document');
+            $('.estado_select').empty();
+            $('.cidade_select').empty();
+            $('.estado_select').html('<div class="form-group has-feedback"><input type="text" class="form-control " placeholder="<?= Lang::trans('site.state') ?>" name="estado" value="<?= old('estado') ?>"/></div>')
+            $('.cidade_select').html('<div class="form-group has-feedback"><input type="text" class="form-control " placeholder="<?= Lang::trans('site.city') ?>" name="cidade" value=""/></div>')
+
+        }
+        $("#pais_fm").val(pais);
+        $("#modal_pais").modal('hide');
+    });
+<?php if (@$_GET['huebr'] == 666) { ?>
+        $("#password_confirmation").bind('paste', function (e) {
+            e.preventDefault();
+        });
+        $("#email_confirmation").bind('paste', function (e) {
+            e.preventDefault();
+        });
+<?php } ?>
+    $("#pais_fm").change(function () {
+        pais = $("#pais_fm").val();
+        if (pais == 'Br') {
+            $('.cpf').inputmask("999.999.999-99");
+            $('.cep').inputmask("99999-999", {"oncomplete": function () {
+                    buscaCep();
+                }});
+            $("[data-mask]").inputmask();
+            $("#cadastro_exterior").val('0');
+            mascaraTelefone(formcadastro.telefone);
+            $('.cpf').attr('placeholder', 'CPF');
+            $('.estado_select').empty();
+            $('.cidade_select').empty();
+            estados_html = '<?= $estados_html ?>';
+            $('.estado_select').html(estados_html);
+            cidades_html = '<?= $cidades_html ?>';
+            $('.cidade_select').html(cidades_html);
+        } else {
+            $("#cadastro_exterior").val('1');
+            $('.cpf').attr('placeholder', 'CPF(Valid only for Brazil)');
+            $('.cpf').inputmask('remove');
+            $('.cep').inputmask('remove');
+            $('.estado_select').empty();
+            $('.cidade_select').empty();
+            $('.estado_select').html('<div class="form-group has-feedback"><input type="text" class="form-control " placeholder="" style="background: rgba(0, 0, 0, 0.08)<?= Lang::trans('site.state ') ?>" name="estado" value="<?= old('estado') ?>"/></div>');
+            $('.cidade_select').html('<div class="form-group has-feedback"><input type="text" class="form-control " placeholder="" style="background: rgba(0, 0, 0, 0.08)<?= Lang::trans('site.city ') ?>" name="cidade" value="<?= old('cidade') ?>"/></div>');
+
+        }
+        $("#pais_fm").val(pais);
+        $("#modal_pais").modal('hide');
+    });
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+        $('.data').inputmask("99-99-9999");
+    });</script>
+
+<script src="<?= env('CFURL') ?>/dist/js/jcombo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/pt-BR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script type="text/javascript">
+
+    function carregar_cidades() {
+        if ($("#descCep").attr('data-cep') == 0) {
+            $(".cidades").removeAttr('tabindex');
+            $(".cidades").removeAttr('aria-hidden');
+            // $(".cidades").select2();
+            //$(".cidades").select2("destroy");
+            $('.cidades')
+                    .find('option')
+                    .remove()
+                    .end();
+            valor = $(".estados").val();
+            estadoSelecionado = valor;
+            url = '<?= env('SITE_URL') ?>localizacao/cidade?id=' + estadoSelecionado + "&tp=2"
+            $.get(url, function (data) {
+                $(".cidades").html(data);
+            });
+            // $(".cidades").select2();
+        }
+    }
+    $(".estados").change(function () {
+        carregar_cidades();
+    });
+    function buscaCep() {
+        cep = $('.cep').val();
+        cep.replace("-", "");
+        $("#descCep").html('Procurando....');
+        url = 'https://viacep.com.br/ws/' + cep + '/json/';
+        $.getJSON(url, function (data) {
+            $("#descCep").html('');
+            cidade = data.localidade;
+            uf = data.uf;
+            bairro = data.bairro;
+            endereco = data.logradouro;
+            console.log(data);
+            if (uf != '') {
+                $("#descCep").attr('data-cep', 1);
+                urlEstado = "<?= env('SITE_URL') ?>localizacao/estado?uf=" + uf;
+                $.getJSON(urlEstado, function (dataEstado) {
+                    estadoSelecionado = dataEstado[0].id;
+                    $(".estados").jCombo({url: '<?= env('SITE_URL') ?>localizacao/estado', dataType: "json", selected_value: estadoSelecionado});
+                    //$(".estados").select2();
+                    if (cidade != '') {
+                        urlCidade = "<?= env('SITE_URL') ?>localizacao/cidade?uf=" + uf + '&nome=' + cidade;
+                        $.getJSON(urlCidade, function (dataCidade) {
+                            cidadeSelecionada = dataCidade[0].id;
+                            url = '<?= env('SITE_URL') ?>localizacao/cidade?id=' + estadoSelecionado;
+                            $(".cidades").jCombo({url: url, dataType: "json", selected_value: cidadeSelecionada});
+                            //$(".cidades").select2();
+                            $(".bairro").val(bairro);
+                            $(".endereco").val(endereco);
+                            $("#descCep").attr('data-cep', 0);
+                        });
+                    }
+
+                });
+            } else {
+                $(".estados").jCombo({url: '<?= env('SITE_URL') ?>localizacao/estado', dataType: "json"});
+            }
+
+
+        });
+    }
+
+
+    $('.cep').inputmask("99999-999", {"oncomplete": function () {
+            buscaCep();
+        }});
+    function mudarTipoConta() {
+        if ($("#juridica_fisica").val() == 1) {
+            $("#cpf").inputmask("99.999.999/9999-99");
+            $("#name").attr('placeholder', 'Razão social');
+            $("#cpf").attr('placeholder', 'Seu CNPJ');
+        } else {
+            $("#cpf").inputmask("999.999.999-99");
+            $("#cpf").attr('placeholder', 'CPF(Valid only for Brazil)');
+
+        }
+    }
+    $("#juridica_fisica").change(function () {
+        mudarTipoConta();
+    });
+
+
+</script>
+
+</body>
+
+@endsection
